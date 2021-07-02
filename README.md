@@ -1,5 +1,5 @@
 # [ApkDiffPatch]
-[![release](https://img.shields.io/badge/release-v1.3.6-blue.svg)](https://github.com/sisong/ApkDiffPatch/releases) 
+[![release](https://img.shields.io/badge/release-v1.4.0-blue.svg)](https://github.com/sisong/ApkDiffPatch/releases) 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sisong/ApkDiffPatch/blob/master/LICENSE) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/sisong/ApkDiffPatch/pulls) 
 [![+issue Welcome](https://img.shields.io/github/issues-raw/sisong/ApkDiffPatch?color=green&label=%2Bissue%20welcome)](https://github.com/sisong/ApkDiffPatch/issues)   
@@ -21,6 +21,7 @@ You can use this library (and Android NDK) to delta update your Apk.
 [Jar sign]: https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html#Signed_JAR_File
 [BsDiff]: http://www.daemonology.net/bsdiff/
 [archive-patcher]: https://github.com/google/archive-patcher
+[sfpatcher]: https://github.com/sisong/sfpatcher
 
 ---
 ## Releases/Binaries
@@ -34,13 +35,17 @@ release the diffData for update oldZip;
 * **ZipPatch**(oldZip,diffData,out newZip)   
 ok , got the newZip;   
 ZipPatch() requires 4*(decompress stream memory) + `ref old decompress` memory + O(1), also `ref old decompress` can use temp disk file without memory;    
-ZipPatch() support multi-thread parallel compress mode when writing zip file, which requires more and more memory!   
+ZipPatch() support multi-thread parallel compress mode when writing zip file, which requires more and more memory! (NOTE: patch by multi-thread need ApkNormalized zip files)   
 
 * NOTE:   
 if your need newZip(patch result) file byte by byte equal, `Released newZip` := **ApkNormalized**(newZip) before run ZipDiff, AND You should not modify the zlib version (unless it is certified compatible);   
 if your apk(or jar) file used [Jar sign](Apk v1 sign), is same as zip file;   
 if your apk used [Apk v2 sign](or [Apk v3 sign]), `Released newZip` := AndroidSDK#apksigner(**ApkNormalized**(AndroidSDK#apksigner(newZip)))  before ZipDiff;   
    
+* NOTE:   
+ApkDiffPath can't be used in the Android app store, because it requires re-signing apk;      
+[sfpatcher] like [archive-patcher], is designed for Android app store, but patch is much faster than archive-patcher.
+
 ---
 ## Why [ApkDiffPatch]
  Why need [ApkDiffPatch] or Google Play's [archive-patcher] after having [BsDiff] or [HDiffPatch]?
@@ -69,5 +74,5 @@ Average Compression                                100.0%    56.3%    55.8%     
    
 ---
 ## Contact
-housisong@gmail.com  
+housisong@hotmail.com  
 
